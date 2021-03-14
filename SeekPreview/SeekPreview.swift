@@ -75,8 +75,8 @@ public class SeekPreview: UIView {
     private func previewCenterForSlider(slider: UISlider) -> CGFloat {
         let trackRect = slider.trackRect(forBounds: slider.bounds)
         let thumbRect = slider.thumbRect(forBounds: slider.bounds, trackRect: trackRect, value: slider.value)
-        let sliderPercentege = (slider.value - slider.minimumValue)/slider.maximumValue
-        return CGFloat(sliderPercentege) * (slider.frame.width - thumbRect.width) + thumbRect.width/2 + self.convert(slider.frame.origin, to: self).x - self.frame.origin.x
+        let sliderPercentage = (slider.value - slider.minimumValue)/(slider.maximumValue - slider.minimumValue)
+        return CGFloat(sliderPercentage) * (slider.frame.width - thumbRect.width) + thumbRect.width/2 + self.convert(slider.frame.origin, to: self).x - self.frame.origin.x
     }
 }
 

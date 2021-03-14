@@ -13,8 +13,8 @@ public class SeekPreview: UIView {
     private let preview = UIImageView()
     private var centerAnchor: NSLayoutConstraint!
     public weak var delegate: SeekPreviewDelegate?
-    
-    public init() {
+    private let animator: SeekPreviewAnimator = ScaleMoveUpAnimator(duration: 0.2)
+    public init(animator: SeekPreviewAnimator) {
         super.init(frame: CGRect.zero)
         initSubviews()
     }
@@ -25,13 +25,13 @@ public class SeekPreview: UIView {
     
     private func initSubviews() {
         self.addSubview(preview)
-        preview.isHidden = true
         preview.translatesAutoresizingMaskIntoConstraints = false
         preview.heightAnchor.constraint(equalTo: preview.widthAnchor, multiplier: 9/16).isActive = true
         preview.leftAnchor.constraint(greaterThanOrEqualTo: self.leftAnchor).isActive = true
         preview.rightAnchor.constraint(lessThanOrEqualTo: self.rightAnchor).isActive = true
         preview.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         preview.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        animator.hidePreview(preview, animated: false)
     }
     
     public func attachToSlider(slider: UISlider) {
@@ -52,19 +52,11 @@ public class SeekPreview: UIView {
     }
     
     @objc private func onTouchDown(sender: UISlider) {
-        self.preview.isHidden = false
-        self.preview.alpha = 0
-        UIView.animate(withDuration: 0.1, animations: {
-            self.preview.alpha = 1
-        })
+        animator.showPreview(self.preview, animated: true)
     }
     
     @objc private func onTouchUp(sender: UISlider) {
-        UIView.animate(withDuration: 0.1, animations: {
-            self.preview.alpha = 0
-        }) { _ in
-            self.preview.isHidden = true
-        }
+        animator.hidePreview(self.preview, animated: true)
     }
     
     @objc private func onTouchDrag(sender: UISlider) {

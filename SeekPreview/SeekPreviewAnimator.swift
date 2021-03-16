@@ -13,7 +13,7 @@ public protocol SeekPreviewAnimator {
     func hidePreview(_ preview: UIView, animated: Bool)
 }
 
-class ScaleMoveUpAnimator: ScalePreviewAnimator {
+public class ScaleMoveUpAnimator: ScalePreviewAnimator {
     
     override func smallTransform(view: UIView) -> CGAffineTransform {
         return super.smallTransform(view: view)
@@ -21,15 +21,16 @@ class ScaleMoveUpAnimator: ScalePreviewAnimator {
     }
 }
 
-class ScalePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
-    func showPreview(_ preview: UIView, animated: Bool) {
+public class ScalePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
+    
+    public func showPreview(_ preview: UIView, animated: Bool) {
         self.animate(animated: animated) {
             preview.transform = CGAffineTransform.identity
             preview.alpha = 1
         }
     }
     
-    func hidePreview(_ preview: UIView, animated: Bool) {
+    public func hidePreview(_ preview: UIView, animated: Bool) {
         self.animate(animated: animated) {
             preview.transform = self.smallTransform(view: preview)
             preview.alpha = 0
@@ -42,13 +43,13 @@ class ScalePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
 }
 
 
-class FadePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
+public class FadePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
     
-    func showPreview(_ preview: UIView, animated: Bool) {
+    public func showPreview(_ preview: UIView, animated: Bool) {
         fade(view: preview, alpha: 1, animated: animated)
     }
     
-    func hidePreview(_ preview: UIView, animated: Bool) {
+    public func hidePreview(_ preview: UIView, animated: Bool) {
         fade(view: preview, alpha: 0, animated: animated)
     }
     
@@ -59,11 +60,11 @@ class FadePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
     }
 }
 
-class BaseAnimator {
+public class BaseAnimator {
     
     let duration: TimeInterval
     
-    init(duration: TimeInterval) {
+    public init(duration: TimeInterval) {
         self.duration = duration
     }
     

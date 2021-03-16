@@ -7,12 +7,29 @@
 
 import UIKit
 
-
+/**
+ * An animator protocol that handles show/hide for the preview
+ */
 public protocol SeekPreviewAnimator {
+    /**
+     * Shows the preview
+     *
+     * - parameter preview: The actual view holding the preview images
+     * - parameter animated: A flag that informs if the show action should be animated or not
+     */
     func showPreview(_ preview: UIView, animated: Bool)
+    /**
+     * Hides the preview
+     *
+     * - parameter preview: The actual view holding the preview images
+     * - parameter animated: A flag that informs if the hide action should be animated or not
+     */
     func hidePreview(_ preview: UIView, animated: Bool)
 }
 
+/**
+ * An animator that scales, moves up and fades the preview.
+ */
 public class ScaleMoveUpAnimator: ScalePreviewAnimator {
     
     override func smallTransform(view: UIView) -> CGAffineTransform {
@@ -21,6 +38,9 @@ public class ScaleMoveUpAnimator: ScalePreviewAnimator {
     }
 }
 
+/**
+* An animator that scales and fades the preview.
+*/
 public class ScalePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
     
     public func showPreview(_ preview: UIView, animated: Bool) {
@@ -42,7 +62,9 @@ public class ScalePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
     }
 }
 
-
+/**
+ * An animator that just fades the preview.
+ */
 public class FadePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
     
     public func showPreview(_ preview: UIView, animated: Bool) {
@@ -60,10 +82,18 @@ public class FadePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
     }
 }
 
+/**
+ * Utility class to handle the animated/not animated block.
+ */
 public class BaseAnimator {
     
     let duration: TimeInterval
     
+    /**
+     * Creates the animator with a default animation duration
+     *
+     * - parameter duration: The duration of all animations
+     */
     public init(duration: TimeInterval) {
         self.duration = duration
     }

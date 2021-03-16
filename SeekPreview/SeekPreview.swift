@@ -7,14 +7,33 @@
 
 import UIKit
 
+/**
+ * A view that can be attached to a seekbar (UISlider) to act as a Seek Preview for a video player.
+ *
+ * The view needs to be as wide as we want to slide the preview, it will internally resize and follow the slider thumb up to the edges.
+ * The height of this view will always be taken as a limit for the preview itself, while the width of the preview will always be in 16:9 proportion.
+ *
+ * Position this view on top of a slider, with a little bit of vertical spacing, and take all the horizontal space you need.
+ *
+ * Set the delegate to handle the loading of preview images during the seek.
+ *
+ * N.B. This view doesn't handle the loading of preview images and doesn't suggest a method to do so.
+ * We only suggest to prefetch those images ahead because the delegate calls will be made synchronously on the main thread.
+ */
 public class SeekPreview: UIView {
     
     private var slider: UISlider?
     private let preview = UIImageView()
     private var centerAnchor: NSLayoutConstraint!
+    /// A delegate that handles the loading of preview images
     public weak var delegate: SeekPreviewDelegate?
     private let animator: SeekPreviewAnimator
     
+    /**
+     * Creates and returns the view.
+     *
+     * - parameter animator: The animator that handles appearing and disappearing of the preview
+     */
     public init(animator: SeekPreviewAnimator = ScaleMoveUpAnimator(duration: 0.2)) {
         self.animator = animator
         super.init(frame: CGRect.zero)
@@ -38,6 +57,16 @@ public class SeekPreview: UIView {
         animator.hidePreview(preview, animated: false)
     }
     
+    /**
+     * Attaches this preview to a single slider.
+     *
+     * When the preview attaches to a slider, it automatically detaches from a previous slider.
+     * From the attach, going forward, the preview will follow the thumb of the slider and will request new preview images on value changes.
+     *
+     * - parameter slider: the slider to which this preview will attach
+     *
+     * WARNING: the slider needs to be in the same view hierarchy as this `SeekPreview` object.
+     */
     public func attachToSlider(slider: UISlider) {
         self.slider?.removeTarget(self, action: nil, for: [.valueChanged, .touchUpInside, .touchUpOutside, .touchDown])
         self.slider = slider

@@ -30,7 +30,7 @@ public protocol SeekPreviewAnimator {
 /**
  * An animator that scales, moves up and fades the preview.
  */
-public class ScaleMoveUpAnimator: ScalePreviewAnimator {
+open class ScaleMoveUpAnimator: ScalePreviewAnimator {
     
     override func smallTransform(view: UIView) -> CGAffineTransform {
         return super.smallTransform(view: view)
@@ -41,7 +41,7 @@ public class ScaleMoveUpAnimator: ScalePreviewAnimator {
 /**
 * An animator that scales and fades the preview.
 */
-public class ScalePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
+open class ScalePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
     
     public func showPreview(_ preview: UIView, animated: Bool) {
         self.animate(animated: animated) {
@@ -65,7 +65,7 @@ public class ScalePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
 /**
  * An animator that just fades the preview.
  */
-public class FadePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
+open class FadePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
     
     public func showPreview(_ preview: UIView, animated: Bool) {
         fade(view: preview, alpha: 1, animated: animated)
@@ -85,7 +85,7 @@ public class FadePreviewAnimator: BaseAnimator, SeekPreviewAnimator {
 /**
  * Utility class to handle the animated/not animated block.
  */
-public class BaseAnimator {
+open class BaseAnimator {
     
     let duration: TimeInterval
     

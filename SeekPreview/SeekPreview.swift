@@ -20,7 +20,7 @@ import UIKit
  * N.B. This view doesn't handle the loading of preview images and doesn't suggest a method to do so.
  * We only suggest to prefetch those images ahead because the delegate calls will be made synchronously on the main thread.
  */
-public class SeekPreview: UIView {
+open class SeekPreview: UIView {
     
     private var slider: UISlider?
     private let preview = UIImageView()
@@ -40,7 +40,7 @@ public class SeekPreview: UIView {
         initSubviews()
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         self.animator = ScalePreviewAnimator(duration: 0.2)
         super.init(coder: coder)
         initSubviews()

@@ -60,4 +60,4 @@ Enricoza, enricozannini93@gmail.com
 
 ## License
 
-SeekPreview is available under the MIT license. See the [LICENSE](LICENSE.txt) file for more info.
+SeekPreview is available under the MIT license. See the [LICENSE](LICENSE) file for more info.

@@ -30,6 +30,40 @@ open class SeekPreview: UIView {
     private let animator: SeekPreviewAnimator
     
     /**
+     * Change this color to reflect the border color of the inner preview
+     *
+     * In order for this to have any effect, borderWidth needs to be passed as well and be greater than 0
+     */
+    public var borderColor: UIColor? = nil {
+        didSet {
+            preview.layer.borderColor = borderColor?.cgColor
+        }
+    }
+    
+    /**
+     * Change this borderWidth to give the inner preview a border color needs to be passed as well and be different from clear color
+     *
+     * In order for this to have any effect, borderColor needs to be
+     */
+    public var borderWidth: CGFloat = .zero {
+        didSet {
+            preview.layer.borderWidth = borderWidth
+        }
+    }
+    
+    /**
+     * Set this radius to give the inner preview round corners
+     *
+     * When you set this property the preview will automatically set its layer masksToBounds to true
+     */
+    public var cornerRadius: CGFloat = .zero {
+        didSet {
+            preview.layer.cornerRadius = cornerRadius
+            preview.layer.masksToBounds = true
+        }
+    }
+    
+    /**
      * Creates and returns the view.
      *
      * - parameter animator: The animator that handles appearing and disappearing of the preview

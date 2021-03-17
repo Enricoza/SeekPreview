@@ -39,6 +39,10 @@ class ViewController: UIViewController, SeekPreviewDelegate {
         
         preview.attachToSlider(slider: slider)
         
+        preview.borderColor = UIColor.black
+        preview.borderWidth = 1
+        preview.cornerRadius = 5
+        
         slider.addTarget(self, action: #selector(onValueChange(slider:)), for: .valueChanged)
         generateImages()
     }

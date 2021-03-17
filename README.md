@@ -34,6 +34,12 @@ Since you probably don't have a preview for each specific value that the slider 
 
 N.B. We don't provide a way to prefetch those images. This is NOT in the scope of this library.
 
+### Customize Animations
+You can create a SeekPreview with a custom animator. You just need to create a class that conforms to the `SeekPreviewAnimator` protocol and pass it in the init.
+
+### Customize Appearence
+You can just change the SeekPreview properties: `borderColor`, `borderWidth` and `cornerRadius` to change the UI of the inner preview holding the images.
+
 
 ## Example
 

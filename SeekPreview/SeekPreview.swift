@@ -22,12 +22,25 @@ import UIKit
  */
 @IBDesignable
 open class SeekPreview: UIView {
-    
-    private var slider: UISlider?
+
     private let preview = UIImageView()
     private var centerAnchor: NSLayoutConstraint!
+
+    @IBOutlet var slider: UISlider? {
+        didSet {
+            oldValue?.removeTarget(self, action: nil, for: [.valueChanged, .touchUpInside, .touchUpOutside, .touchDown])
+            if let anchor = self.centerAnchor {
+                preview.removeConstraint(anchor)
+            }
+            if let slider = self.slider {
+                linkSlider(slider: slider)
+            }
+        }
+    }
+
     /// A delegate that handles the loading of preview images
-    public weak var delegate: SeekPreviewDelegate?
+    @IBOutlet public weak var delegate: SeekPreviewDelegate?
+    
     /// An animator that is used to show and hide the preview
     public var animator: SeekPreviewAnimator = ScalePreviewAnimator(duration: 0.2)
     
@@ -135,17 +148,15 @@ open class SeekPreview: UIView {
      * WARNING: the slider needs to be in the same view hierarchy as this `SeekPreview` object.
      */
     public func attachToSlider(slider: UISlider) {
-        self.slider?.removeTarget(self, action: nil, for: [.valueChanged, .touchUpInside, .touchUpOutside, .touchDown])
         self.slider = slider
-        
+    }
+    
+    private func linkSlider(slider: UISlider) {
         slider.addTarget(self, action: #selector(onTouchDrag(sender:)), for: .valueChanged)
         slider.addTarget(self, action: #selector(onTouchUp(sender:)), for: .touchUpInside)
         slider.addTarget(self, action: #selector(onTouchUp(sender:)), for: .touchUpOutside)
         slider.addTarget(self, action: #selector(onTouchDown(sender:)), for: .touchDown)
         
-        if let anchor = self.centerAnchor {
-            preview.removeConstraint(anchor)
-        }
         centerAnchor = preview.centerXAnchor.constraint(equalTo: self.leftAnchor, constant: previewCenterForSlider(slider: slider))
         centerAnchor.priority = UILayoutPriority(900)
         centerAnchor.isActive = true

@@ -12,7 +12,7 @@ import Foundation
  *
  * N.B. You can implement preview images loading as you want, but we suggest you to do it in advance because we will require them synchronously on the main thread
  */
-public protocol SeekPreviewDelegate: class {
+@objc public protocol SeekPreviewDelegate: class {
     /**
      * A method used to request the preview for a specific value.
      *

@@ -102,6 +102,15 @@ open class SeekPreview: UIView {
         }
     }
     
+    open override var contentMode: UIView.ContentMode {
+        get {
+            preview.contentMode
+        }
+        set {
+            preview.contentMode = newValue
+        }
+    }
+    
     /**
      * Creates and returns the view.
      *

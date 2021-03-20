@@ -11,6 +11,8 @@ Attach a SeekPreview to a seekBar to show small preview images of the seek actio
 ## Usage
 You just need to create a `SeekPreview` object, pass it a `SeekPreviewDelegate` to provide preloaded preview images, and attach the preview to a `UISlider` that belongs to the same view hierarchy as the preview.
 
+### Programmatically
+
 ```swift
 let slider = UISlider()
 view.addSubview(slider)
@@ -40,6 +42,18 @@ You can create a SeekPreview with a custom animator. You just need to create a c
 ### Customize Appearence
 You can just change the SeekPreview properties: `borderColor`, `borderWidth` and `cornerRadius` to change the UI of the inner preview holding the images.
 
+### Storyboard
+You can also create a view directly from the storyboard. 
+
+You can customize the Appearence with the attribute inspector.
+
+![demo](img/storyboardAppearence.png)
+
+You can also attach Slider and Delegate via the outlets (much like you would do with a TableView delegate and dataSource).
+
+![demo](img/storyboardOutlets.png)
+
+In case you should use the storyboard you'll have the default animator, but you can later change it programmatically.
 
 ## Example
 

@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SeekPreview'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'Attach a SeekPreview to a seekBar to show small preview images during the seek action.'
 
   s.description      = <<-DESC

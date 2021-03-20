@@ -20,6 +20,7 @@ import UIKit
  * N.B. This view doesn't handle the loading of preview images and doesn't suggest a method to do so.
  * We only suggest to prefetch those images ahead because the delegate calls will be made synchronously on the main thread.
  */
+@IBDesignable
 open class SeekPreview: UIView {
     
     private var slider: UISlider?
@@ -27,16 +28,24 @@ open class SeekPreview: UIView {
     private var centerAnchor: NSLayoutConstraint!
     /// A delegate that handles the loading of preview images
     public weak var delegate: SeekPreviewDelegate?
-    private let animator: SeekPreviewAnimator
+    /// An animator that is used to show and hide the preview
+    public var animator: SeekPreviewAnimator = ScalePreviewAnimator(duration: 0.2)
     
     /**
      * Change this color to reflect the border color of the inner preview
      *
      * In order for this to have any effect, borderWidth needs to be passed as well and be greater than 0
      */
-    public var borderColor: UIColor? = nil {
-        didSet {
-            preview.layer.borderColor = borderColor?.cgColor
+    @IBInspectable
+    public var borderColor: UIColor? {
+        get {
+            guard let color = preview.layer.borderColor else {
+                return nil
+            }
+            return UIColor(cgColor: color)
+        }
+        set {
+            preview.layer.borderColor = newValue?.cgColor
         }
     }
     
@@ -45,9 +54,13 @@ open class SeekPreview: UIView {
      *
      * In order for this to have any effect, borderColor needs to be
      */
-    public var borderWidth: CGFloat = .zero {
-        didSet {
-            preview.layer.borderWidth = borderWidth
+    @IBInspectable
+    public var borderWidth: CGFloat {
+        get {
+            preview.layer.borderWidth
+        }
+        set {
+            preview.layer.borderWidth = newValue
         }
     }
     
@@ -56,10 +69,23 @@ open class SeekPreview: UIView {
      *
      * When you set this property the preview will automatically set its layer masksToBounds to true
      */
-    public var cornerRadius: CGFloat = .zero {
-        didSet {
-            preview.layer.cornerRadius = cornerRadius
-            preview.layer.masksToBounds = true
+    @IBInspectable
+    public var cornerRadius: CGFloat {
+        get {
+            preview.layer.cornerRadius
+        }
+        set {
+            preview.layer.cornerRadius = newValue
+            preview.layer.masksToBounds = newValue > CGFloat.zero
+        }
+    }
+    
+    open override var backgroundColor: UIColor? {
+        get {
+            preview.backgroundColor
+        }
+        set {
+            preview.backgroundColor = newValue
         }
     }
     
@@ -68,19 +94,26 @@ open class SeekPreview: UIView {
      *
      * - parameter animator: The animator that handles appearing and disappearing of the preview
      */
-    public init(animator: SeekPreviewAnimator = ScaleMoveUpAnimator(duration: 0.2)) {
-        self.animator = animator
-        super.init(frame: CGRect.zero)
+    convenience public init(animator: SeekPreviewAnimator) {
+        self.init()
+    }
+    
+    convenience public init() {
+        self.init(frame: CGRect.zero)
+    }
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
         initSubviews()
     }
     
     required public init?(coder: NSCoder) {
-        self.animator = ScalePreviewAnimator(duration: 0.2)
         super.init(coder: coder)
         initSubviews()
     }
     
     private func initSubviews() {
+        super.backgroundColor = .clear
         self.addSubview(preview)
         preview.translatesAutoresizingMaskIntoConstraints = false
         preview.heightAnchor.constraint(equalTo: preview.widthAnchor, multiplier: 9/16).isActive = true
@@ -136,6 +169,12 @@ open class SeekPreview: UIView {
         let thumbRect = slider.thumbRect(forBounds: slider.bounds, trackRect: trackRect, value: slider.value)
         let sliderPercentage = (slider.value - slider.minimumValue)/(slider.maximumValue - slider.minimumValue)
         return CGFloat(sliderPercentage) * (slider.frame.width - thumbRect.width) + thumbRect.width/2 + self.convert(slider.frame.origin, to: self).x - self.frame.origin.x
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        animator.showPreview(preview, animated: false)
+        self.centerXAnchor.constraint(equalTo: preview.centerXAnchor).isActive = true
     }
 }
 
